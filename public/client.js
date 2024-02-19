@@ -1,7 +1,5 @@
 // DOM elements.
 const roomSelectionContainer = document.getElementById('room-selection-container')
-const roomInput = document.getElementById('room-input')
-const connectButton = document.getElementById('connect-button')
 
 const videoChatContainer = document.getElementById('video-chat-container')
 const localVideoComponent = document.getElementById('local-video')
@@ -27,13 +25,33 @@ const iceServers = {
     { urls: 'stun:stun2.l.google.com:19302' },
     { urls: 'stun:stun3.l.google.com:19302' },
     { urls: 'stun:stun4.l.google.com:19302' },
+    // { url: 'stun:stun01.sipphone.com' },
+    // { url: 'stun:stun.ekiga.net' },
+    // { url: 'stun:stun.fwdnet.net' },
+    // { url: 'stun:stun.ideasip.com' },
+    // { url: 'stun:stun.iptel.org' },
+    // { url: 'stun:stun.rixtelecom.se' },
+    // { url: 'stun:stun.schlund.de' },
+    // { url: 'stun:stunserver.org' },
+    // { url: 'stun:stun.softjoys.com' },
+    // { url: 'stun:stun.voiparound.com' },
+    // { url: 'stun:stun.voipbuster.com' },
+    // { url: 'stun:stun.voipstunt.com' },
+    // { url: 'stun:stun.voxgratia.org' },
+    // { url: 'stun:stun.xten.com' },
   ],
 }
 
-// BUTTON LISTENER ============================================================
-connectButton.addEventListener('click', () => {
-  joinRoom(roomInput.value)
-})
+// EVENT STARTER ============================================================
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const roomValue = urlParams.get('room')
+if(roomValue){
+  joinRoom(roomValue)
+}
+// connectButton.addEventListener('click', () => {
+//   joinRoom(roomInput.value)
+// })
 
 // SOCKET EVENT CALLBACKS =====================================================
 socket.on('room_created', async () => {
@@ -133,7 +151,7 @@ async function createOffer(rtcPeerConnection) {
   try {
     const sessionDescription = await rtcPeerConnection.createOffer()
     rtcPeerConnection.setLocalDescription(sessionDescription)
-    
+
     socket.emit('webrtc_offer', {
       type: 'webrtc_offer',
       sdp: sessionDescription,
@@ -148,7 +166,7 @@ async function createAnswer(rtcPeerConnection) {
   try {
     const sessionDescription = await rtcPeerConnection.createAnswer()
     rtcPeerConnection.setLocalDescription(sessionDescription)
-    
+
     socket.emit('webrtc_answer', {
       type: 'webrtc_answer',
       sdp: sessionDescription,

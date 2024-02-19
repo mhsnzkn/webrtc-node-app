@@ -46,12 +46,15 @@
   </head>
 
   <body>
-    <div id="room-selection-container" class="centered">
-      <h1>WebRTC video conference</h1>
-      <label>Enter the number of the room you want to connect</label>
-      <input id="room-input" type="text" />
-      <button id="connect-button">CONNECT</button>
-    </div>
+    <form method="get" action="/">
+
+      <div id="room-selection-container" class="centered">
+        <h1>WebRTC video conference</h1>
+        <label>Enter the number of the room you want to connect</label>
+        <input name="room" type="text" />
+        <button type="submit">CONNECT</button>
+      </div>
+    </form>
 
     <div id="video-chat-container" class="video-position" style="display: none">
       <video id="local-video" autoplay="autoplay" muted="muted"></video>
