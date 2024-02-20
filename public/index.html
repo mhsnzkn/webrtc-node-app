@@ -41,6 +41,11 @@
       #remote-video {
         height: 100%;
         width: 100%;
+        max-height: 980px;
+      }
+
+      #controls{
+        text-align: center;
       }
     </style>
   </head>
@@ -59,6 +64,7 @@
     <div id="video-chat-container" class="video-position" style="display: none">
       <video id="local-video" autoplay="autoplay" muted="muted"></video>
       <video id="remote-video" autoplay="autoplay"></video>
+      <div id="controls"><a href="/"><img width="64" height="64" src="/end-call-icon-circle.svg"></a></div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
