@@ -13,7 +13,6 @@ const mediaConstraints = {
 }
 let localStream
 let remoteStream
-let isRoomCreator
 let rtcPeerConnection // Connection between the local device and the remote peer.
 let roomId
 
@@ -43,10 +42,11 @@ const iceServers = {
 }
 
 // EVENT STARTER ============================================================
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
+const queryString = window.location.search
+const urlParams = new URLSearchParams(queryString)
 const roomValue = urlParams.get('room')
-if(roomValue){
+
+if (roomValue) {
   joinRoom(roomValue)
 }
 // connectButton.addEventListener('click', () => {
@@ -58,7 +58,7 @@ socket.on('room_created', async () => {
   console.log('Socket event callback: room_created')
 
   await setLocalStream(mediaConstraints)
-  isRoomCreator = true
+  sessionStorage.setItem('host', true)
 })
 
 socket.on('room_joined', async () => {
@@ -77,6 +77,7 @@ socket.on('full_room', () => {
 socket.on('start_call', async () => {
   console.log('Socket event callback: start_call')
 
+  const isRoomCreator = sessionStorage.getItem('host')
   if (isRoomCreator) {
     rtcPeerConnection = new RTCPeerConnection(iceServers)
     addLocalTracks(rtcPeerConnection)
@@ -89,6 +90,7 @@ socket.on('start_call', async () => {
 socket.on('webrtc_offer', async (event) => {
   console.log('Socket event callback: webrtc_offer')
 
+  const isRoomCreator = sessionStorage.getItem('host')
   if (!isRoomCreator) {
     rtcPeerConnection = new RTCPeerConnection(iceServers)
     addLocalTracks(rtcPeerConnection)
